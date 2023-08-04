@@ -41,15 +41,15 @@ public class HashMapSort {
         for (String item : parts) {
             Integer mylenght = item.length();
             List<String> mylist = new ArrayList<String>();
-            if (!stats.containsKey(mylenght)) {
-                mylist.add(item);
-                stats.put(mylenght, mylist);
-            } else {
+            if (stats.containsKey(mylenght)) {
                 mylist = stats.get(mylenght);
                 if(!mylist.contains(item)) {
                     mylist.add(item);
                     stats.put(mylenght, mylist);
                 }
+            } else {
+                mylist.add(item);
+                stats.put(mylenght, mylist);
             }
         }
         for (Map.Entry<Integer, List<String>> entry: stats.entrySet()) {
