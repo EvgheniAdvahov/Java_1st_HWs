@@ -10,15 +10,15 @@ public class HashMapSort {
      * Программа-минимум:
      * 1. Слова, состоящие из дефисов, считаем одним словом. Т.е. каких-то - одно слово из 8 символов.
      * 2. Точки и запятые не должны входить в статистику.
-     *
+     * <p>
      * Доп. задание
      * 1. * Не включать дефис в длину слова. Т.е. каких-то - одно слово из 7 символов.
-     *
+     * <p>
      * Пример:
-     *
+     * <p>
      * Это мой первый текст. Он состоит из каких-то тестовых слов и нужен для того, чтобы выполнить тестовое задание GB.
      * Данный текст не несет в себе какого-либо смысла, он просто содержит набор слов.
-     *
+     * <p>
      * 1 -> [и, в]
      * 2 -> [он, из, gb, не]
      * 3 -> [мой, для]
@@ -26,21 +26,22 @@ public class HashMapSort {
      * 5 -> [текст, нужен, чтобы, несет, набор]
      * ...
      */
-    static void printStats(String text) {
+    static List<String > transformText(String textToTransform){
         // 1. Split текста, приведение его к нижнему регистру, удаление запятых и точек.
-        text = text.replaceAll("\\.", "")
-                .replaceAll("\\,", "")
+        textToTransform = textToTransform.replaceAll("\\.", "")
+                .replaceAll(",", "")
                 .replaceAll("-", " ")
                 .toLowerCase();
+        return new ArrayList<>(Arrays.asList(textToTransform.split(" ")));
+    }
 
-        List<String> parts = new ArrayList<String>(Arrays.asList(text.split(" ")));
-
+    static void printStats(List<String > myList) {
         // 2. Сбор структуры со статистикой.
-        Map<Integer, List<String>> stats = new HashMap<Integer, List<String>>(); // Структура, в которой ключ - длина слова, значение - список таких слов.
-        int count =0;
-        for (String item : parts) {
+        // Структура, в которой ключ - длина слова, значение - список таких слов.
+        Map<Integer, List<String>> stats = new TreeMap<>();
+        for (String item : myList) {
             Integer mylenght = item.length();
-            List<String> mylist = new ArrayList<String>();
+            List<String> mylist = new ArrayList<>();
             if (stats.containsKey(mylenght)) {
                 mylist = stats.get(mylenght);
                 if(!mylist.contains(item)) {
@@ -54,16 +55,13 @@ public class HashMapSort {
         }
         for (Map.Entry<Integer, List<String>> entry: stats.entrySet()) {
             System.out.println(entry.getKey() + " = " + entry.getValue());
-            
         }
     }
-
 
     public static void main(String[] args) {
         String text = "Это мой первый текст. Он состоит из каких-то тестовых слов и нужен для того, чтобы выполнить тестовое задание GB. " +
                 "Данный текст не несет в себе какого-либо смысла, он просто содержит набор слов.";
-
-        printStats(text);
+        printStats(transformText(text));
     }
 
 }
